@@ -1,0 +1,11 @@
+{
+  "name": "serverless-todo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Saad Muhamamd <s.muhammad86@gmail.com>",
+  "license": "MIT",
+  "private":true,
+  "workspaces":[
+    "packages/*"
+  ]
+}
