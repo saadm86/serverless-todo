@@ -4,14 +4,19 @@ import netlifyIdentity from "netlify-identity-widget";
 import {Link} from 'gatsby'
 
 export default (props) => {
-    
+
     const [user, setUser] = useState()
 
   useEffect(() => {
     netlifyIdentity.init({});
-    netlifyIdentity.on("login", user => setUser(user))
-    netlifyIdentity.on("logout", () => setUser())
   });
+
+  netlifyIdentity.on("login", user => {
+      netlifyIdentity.close();
+      setUser(user)
+  })
+
+netlifyIdentity.on("logout", () => setUser())
   return (
     <Container>
       <Flex as="nav">
@@ -35,4 +40,4 @@ export default (props) => {
       </Flex>
     </Container>
   );
-};
+}
