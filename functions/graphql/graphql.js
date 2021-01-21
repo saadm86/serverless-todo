@@ -2,7 +2,9 @@ const { ApolloServer, gql } = require("apollo-server-lambda");
 const faunadb = require("faunadb");
 const q = faunadb.query;
 
-var client = new faunadb.Client({ secret: process.env.FAUNA});
+var client = new faunadb.Client({
+  secret: "fnAD_YcRlpACCFz-B4BTBFqv_c4KLaACsDe1G_O_",
+})
 
 const typeDefs = gql`
   type Query {
@@ -26,7 +28,7 @@ const resolvers = {
         return [];
       } else {
         const results = await client.query(
-          q.Paginate(q.Match(q.Index("todos_by_user"), user))
+          q.Paginate(q.Match(q.Index("all_todos"), user))
         );
         return results.data.map(([ref, text, done]) => ({
           id: ref.id,
@@ -42,7 +44,7 @@ const resolvers = {
         throw new Error("Login or Signup");
       }
       const results = await client.query(
-        q.Create(q.Collection("user-todos"), {
+        q.Create(q.Collection("todos"), {
           data: {
             text,
             done: false,
@@ -60,7 +62,7 @@ const resolvers = {
         throw new Error("Login or Signup");
       }
       const results = await client.query(
-        q.Update(q.Ref(q.Collection("user-todos"), id), {
+        q.Update(q.Ref(q.Collection("todos"), id), {
           data: {
             done: true
           }
